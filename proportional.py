@@ -107,3 +107,6 @@ class Experience(object):
         self.alpha, old_alpha = alpha, self.alpha
         priorities = [self.tree.get_val(i)**-old_alpha for i in range(self.tree.filled_size())]
         self.priority_update(range(self.tree.filled_size()), priorities)
+
+    def __len__(self):
+        return self.tree.filled_size()
