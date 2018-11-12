@@ -36,7 +36,7 @@ class SumTree(object):
         if not tindex == 0:
             tindex = int((tindex-1)/2)
             self.reconstruct(tindex, diff)
-    
+
     def find(self, value, norm=True):
         if norm:
             value *= self.tree[0]
@@ -44,7 +44,10 @@ class SumTree(object):
 
     def _find(self, value, index):
         if 2**(self.tree_level-1)-1 <= index:
-            return self.data[index-(2**(self.tree_level-1)-1)], self.tree[index], index-(2**(self.tree_level-1)-1)
+            try:
+                return (self.data[index-(2**(self.tree_level-1)-1)], self.tree[index], index-(2**(self.tree_level-1)-1))
+            except:
+                return None
 
         left = self.tree[2*index+1]
 
@@ -52,7 +55,7 @@ class SumTree(object):
             return self._find(value,2*index+1)
         else:
             return self._find(value-left,2*(index+1))
-        
+
     def print_tree(self):
         for k in range(1, self.tree_level+1):
             for j in range(2**(k-1)-1, 2**k-1):
