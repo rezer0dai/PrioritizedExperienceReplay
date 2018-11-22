@@ -71,13 +71,18 @@ class Experience(object):
         priorities = []
         for _ in range(self.batch_size):
             r = random.random()
-            data, priority, index = self.tree.find(r)
+            data = self.tree.find(r)
+            if data is None:
+                continue
+            data, priority, index = data
             priorities.append(priority)
             weights.append((1./self.memory_size/priority)**beta if priority > 1e-16 else 0)
             indices.append(index)
             out.append(data)
             self.priority_update([index], [0]) # To avoid duplicating
 
+        if not len(out):
+            return None, None, None
 
         self.priority_update(indices, priorities) # Revert priorities
 
