@@ -75,8 +75,10 @@ class Experience(object):
             if data is None:
                 continue
             data, priority, index = data
+            if data is None:
+                continue
             priorities.append(priority)
-            weights.append((1./self.memory_size/priority)**beta if priority > 1e-16 else 0)
+            weights.append((1./self.memory_size/priority)**beta if abs(priority) > 1e-8 else 1e-8)
             indices.append(index)
             out.append(data)
             self.priority_update([index], [0]) # To avoid duplicating
